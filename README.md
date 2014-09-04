@@ -38,3 +38,12 @@ Output:
 35942,James,Burns,jburns@katz.net,Thailand,0-(950)809-5042
 89811,Jack,Burns,jburns@katz.net,Egypt,0-(003)901-3728
 ```
+
+Notes
+-----
+
+This codes uses the hashcode of the indexed column value to determine a "bucket" (the number of buckets is fixed to 1024*1024 in this case); this bucket is directly mapped to a location in the buckets file (.idx.bkt), at which we read the offset of the first node in the actual index file (.idx). Since several values will fall into the same bucket, each node has a reference to the next node in the bucket (so nodes in the same bucket form a singly linked list).
+
+This implementation is simple, but it has limitations:
+- No fast way to update the index if a row is modified or deleted, because the nodes don't have a fixed size; addition of new rows at the end of the CSV file could be supported, but isn't implemented.
+- The fact that the index nodes are organized in linked lists makes it very inefficient when many rows have the same value, causing a lot of seeking in the index file.
