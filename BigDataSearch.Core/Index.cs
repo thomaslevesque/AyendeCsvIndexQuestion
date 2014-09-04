@@ -7,6 +7,7 @@ namespace BigDataSearch.Core
 {
     public class Index : IDisposable
     {
+        // Way too much for now, but might become useful of more information is added later
         private const long IndexFileHeaderSize = 1024;
         
         private readonly Stream _bucketStream;
@@ -20,7 +21,7 @@ namespace BigDataSearch.Core
             try
             {
                 _indexStream = CreateIndexStream(fileName, create, ref bucketCount);
-                _bucketStream = CreateBucketStream(fileName + ".off", create, bucketCount);
+                _bucketStream = CreateBucketStream(fileName + ".bkt", create, bucketCount);
                 _bucketCount = bucketCount;
             }
             catch
